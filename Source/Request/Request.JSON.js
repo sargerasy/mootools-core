@@ -21,7 +21,7 @@ Request.JSON = new Class({
 
 	success: function(text){
 		this.response.json = JSON.decode(text, this.options.secure);
-		this.onSuccess(this.response.json, text);
+		this.onSuccess(this.response);
 	}
 
 });
