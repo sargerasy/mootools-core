@@ -12,51 +12,21 @@ Request.HTML = new Class({
 
 	options: {
 		update: false,
-		evalScripts: true,
-		filter: false
-	},
-
-	processHTML: function(text){
-		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-		text = (match) ? match[1] : text;
-		
-		var container = new Element('div');
-		
-		return $try(function(){
-			var root = '<root>' + text + '</root>', doc;
-			if (Browser.Engine.trident){
-				doc = new ActiveXObject('Microsoft.XMLDOM');
-				doc.async = false;
-				doc.loadXML(root);
-			} else {
-				doc = new DOMParser().parseFromString(root, 'text/xml');
-			}
-			root = doc.getElementsByTagName('root')[0];
-			for (var i = 0, k = root.childNodes.length; i < k; i++){
-				var child = Element.clone(root.childNodes[i], true, true);
-				if (child) container.grab(child);
-			}
-			return container;
-		}) || container.set('html', text);
+		evalScripts: true
 	},
 
 	success: function(text){
-		var options = this.options, response = this.response;
-		
-		response.html = text.stripScripts(function(script){
-			response.javascript = script;
+		var javascript = '';
+		var html = text.stripScripts(function(script){
+			javascript = script;
 		});
-		
-		var temp = this.processHTML(response.html);
-		
-		response.tree = temp.childNodes;
-		response.elements = temp.getElements('*');
-		
-		if (options.filter) response.tree = response.elements.filter(options.filter);
-		if (options.update) $(options.update).empty().adopt(response.tree);
-		if (options.evalScripts) $exec(response.javascript);
-		
-		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
+
+		if (this.options.update) $(this.options.update).empty().set('html', html);
+		if (this.options.evalScripts) $exec(javascript);
+
+		this.response.html = html;
+		this.response.javascript = javascript;
+		this.onSuccess(this.response);
 	}
 
 });
