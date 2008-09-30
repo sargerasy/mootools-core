@@ -29,7 +29,6 @@ var Request = new Class({
 		emulation: true,
 		urlEncoded: true,
 		encoding: 'utf-8',
-		evalScripts: false,
 		evalResponse: false
 	},
 
@@ -63,11 +62,12 @@ var Request = new Class({
 
 	processScripts: function(text){
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
-		return text.stripScripts(this.options.evalScripts);
+		return text.stripScripts();
 	},
 
-	success: function(text, xml){
-		this.onSuccess(this.processScripts(text), xml);
+	success: function(text){
+		this.response.text = this.processScripts(text);
+		this.onSuccess(this.response);
 	},
 	
 	onSuccess: function(){
