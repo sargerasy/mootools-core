@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-describe('Element constructor', {
+describe('new Element', {
 
 	"should return an Element with the correct tag": function(){
 		var element = new Element('div');
@@ -15,50 +15,46 @@ describe('Element constructor', {
 		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
 
-	'should return an Element with various attributes': function(){
-		var element = new Element('div', { 'id': 'divID', 'title': 'divTitle' });
+	"should return an Element with various attributes": function(){
+		var element = new Element('div', {'id': 'divID', 'title': 'divTitle'});
 		value_of(element.id).should_be('divID');
 		value_of(element.title).should_be('divTitle');
 	},
 
-	'should return an Element with for attribute': function(){
-		var label = new Element('label', { 'for': 'myId' });
+	"should return an Element with for attribute": function(){
+		var label = new Element('label', {'for': 'myId'});
 		value_of(label.htmlFor).should_be('myId');
 	},
 
-	'should return an Element with class attribute': function(){
-		var div1 = new Element('div', { 'class': 'class' });
-		var div2 = new Element('div', { 'class': 'class1 class2 class3' });
-
+	"should return an Element with class attribute": function(){
+		var div1 = new Element('div', {'class': 'class'});
+		var div2 = new Element('div', {'class': 'class1 class2 class3'});
 		value_of(div1.className).should_be('class');
 		value_of(div2.className).should_be('class1 class2 class3');
 	},
 
-	'should return input Elements with name and type attributes': function(){
-		var username = new Element('input', { type: 'text', name: 'username', value: 'username' });
-		var password = new Element('input', { type: 'password', name: 'password', value: 'password' });
-
+	"should return input Elements with name and type attributes": function(){
+		var username = new Element('input', {type: 'text', name: 'username', value: 'username'});
+		var password = new Element('input', {type: 'password', name: 'password', value: 'password'});
 		value_of(username.type).should_be('text');
 		value_of(username.name).should_be('username');
 		value_of(username.value).should_be('username');
-
 		value_of(password.type).should_be('password');
 		value_of(password.name).should_be('password');
 		value_of(password.value).should_be('password');
 	},
 
-	'should return input Elements that are checked': function(){
-		var check1 = new Element('input', { type: 'checkbox' });
-		var check2 = new Element('input', { type: 'checkbox', checked: true });
-		var check3 = new Element('input', { type: 'checkbox', checked: 'checked' });
-
+	"should return input Elements that are checked": function(){
+		var check1 = new Element('input', {type: 'checkbox'});
+		var check2 = new Element('input', {type: 'checkbox', checked: true});
+		var check3 = new Element('input', {type: 'checkbox', checked: 'checked'});
 		value_of(check1.checked).should_be_false();
 		value_of(check2.checked).should_be_true();
 		value_of(check2.checked).should_be_true();
 	},
 
 	"should return a select Element that retains it's selected options": function(){
-		var div = new Element('div', { 'html':
+		var div = new Element('div', {'html':
 			'<select multiple="multiple" name="select[]">' +
 				'<option value="" name="none">--</option>' +
 				'<option value="volvo" name="volvo">Volvo</option>' +
@@ -67,19 +63,16 @@ describe('Element constructor', {
 				'<option value="bmw" name="bmw">BMW</option>' +
 			'</select>'
 		});
-
 		var select1 = div.getFirst();
-		var select2 = new Element('select', { name: 'select[]', multiple: true }).adopt(
-			new Element('option', { name: 'none', value: '', html: '--' }),
-			new Element('option', { name: 'volvo', value: 'volvo', html: 'Volvo' }),
-			new Element('option', { name: 'saab', value: 'saab', html: 'Saab', selected: true }),
-			new Element('option', { name: 'opel', value: 'opel', html: 'Opel', selected: 'selected' }),
-			new Element('option', { name: 'bmw', value: 'bmw', html: 'BMW' })
+		var select2 = new Element('select', {name: 'select[]', multiple: true}).adopt(
+			new Element('option', {name: 'none', value: '', html: '--'}),
+			new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+			new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
+			new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: 'selected'}),
+			new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
 		);
-
 		value_of(select1.multiple).should_be_true();
 		value_of(select2.multiple).should_be_true();
-
 		value_of(select1.name).should_be(select2.name);
 		value_of(select1.options.length).should_be(select2.options.length);
 		value_of(select1.toQueryString()).should_be(select2.toQueryString());
@@ -90,25 +83,52 @@ describe('Element constructor', {
 describe('Element.set', {
 
 	"should set a single attribute of an Element": function(){
-		var div = new Element('div').set('id', 'some_id');
-		value_of(div.id).should_be('some_id');
+		var div = new Element('div').set('id', 'someId');
+		value_of(div.id).should_be('someId');
 	},
 
-	"should set the checked attribute of an Element": function(){
-		var input1 = new Element('input', {type: 'checkbox'}).set('checked', 'checked');
-		var input2 = new Element('input', {type: 'checkbox'}).set('checked', true);
-		value_of(input1.checked).should_be_true();
-		value_of(input2.checked).should_be_true();
+	"should set the class name of an Element": function(){
+		var div = new Element('div').set('class', 'someClass');
+		value_of(div.className).should_be('someClass');
 	},
 
-	"should set the class name of an element": function(){
-		var div = new Element('div').set('class', 'some_class');
-		value_of(div.className).should_be('some_class');
+	"should set the checked attribute of an input Element": function(){
+		var checked1 = new Element('input', {type: 'checkbox'}).set('checked', 'checked');
+		var checked2 = new Element('input', {type: 'checkbox'}).set('checked', true);
+		var checked3 = new Element('input', {type: 'checkbox'}).set('checked', false);
+		value_of(checked1.checked).should_be_true();
+		value_of(checked2.checked).should_be_true();
+		value_of(checked3.checked).should_be_false();
 	},
 
-	"should set the for attribute of an element": function(){
-		var input = new Element('input', {type: 'text'}).set('for', 'some_element');
-		value_of(input.htmlFor).should_be('some_element');
+	"should set the disabled attribute of an input Element": function(){
+		var disabled1 = new Element('input', {type: 'text'}).setProperty('disabled', 'disabled');
+		var disabled2 = new Element('input', {type: 'text'}).setProperty('disabled', true);
+		var disabled3 = new Element('input', {type: 'text'}).setProperty('disabled', false);
+		value_of(disabled1.disabled).should_be_true();
+		value_of(disabled2.disabled).should_be_true();
+		value_of(disabled3.disabled).should_be_false();
+	},
+
+	"should set the readonly attribute of an input Element": function(){
+		var readonly1 = new Element('input', {type: 'text'}).setProperty('readonly', 'readonly');
+		var readonly2 = new Element('input', {type: 'text'}).setProperty('readonly', true);
+		var readonly3 = new Element('input', {type: 'text'}).setProperty('readonly', false);
+		value_of(readonly1.readOnly).should_be_true();
+		value_of(readonly2.readOnly).should_be_true();
+		value_of(readonly3.readOnly).should_be_false();
+	},
+
+	"should set the for attribute of a label Element": function(){
+		var label = new Element('label').set('for', 'someInput');
+		value_of(label.htmlFor).should_be('someInput');
+	},
+
+	"should set the href of an anchor Element": function(){
+		var anchor1 = new Element('a').set('href', 'http://mootools.net/');
+		var anchor2 = new Element('a').set('href', '#someLink');
+		value_of(anchor1.href).should_be('http://mootools.net/');
+		value_of(anchor2.getAttribute('href', 2)).should_be('#someLink');
 	},
 
 	"should set the html of an Element": function(){
@@ -169,35 +189,160 @@ describe('Element.set', {
 
 	"should set the text of an element": function(){
 		var div = new Element('div').set('text', 'some text content');
-		value_of(div.get('text')).should_be('some text content');
 		value_of(div.innerHTML).should_be('some text content');
 	},
 
+	"should set the type of an input Element": function(){
+		var input1 = new Element('input').setProperty('type', 'text');
+		var input2 = new Element('input').setProperty('type', 'checkbox');
+		value_of(input1.type).should_be('text');
+		value_of(input2.type).should_be('checkbox');
+	},
+
 	"should set multiple attributes of an Element": function(){
-		var div = new Element('div').set({ id: 'some_id', 'title': 'some_title', 'html': 'some_content' });
-		value_of(div.id).should_be('some_id');
-		value_of(div.title).should_be('some_title');
-		value_of(div.innerHTML).should_be('some_content');
+		var div = new Element('div').set({id: 'someId', 'title': 'someTitle', 'html': 'someContent'});
+		value_of(div.id).should_be('someId');
+		value_of(div.title).should_be('someTitle');
+		value_of(div.innerHTML).should_be('someContent');
 	},
 
 	"should set various attributes of a script Element": function(){
-		var script = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
+		var script = new Element('script').set({type: 'text/javascript', defer: 'defer'});
 		value_of(script.type).should_be('text/javascript');
 		value_of(script.defer).should_be_true();
 	},
 
 	"should set various attributes of a table Element": function(){
-		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
-		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
-		value_of(table1.border).should_be(2);
-		value_of(table1.cellPadding).should_be(3);
-		value_of(table2.cellPadding).should_be(3);
-		value_of(table1.cellSpacing).should_be(4);
-		value_of(table2.cellSpacing).should_be(4);
-		value_of(table1.align).should_be('center');
+		var table = new Element('table').set({align: 'center', border: '2', cellpadding: '3', cellspacing: '4'});
+		value_of(table.align).should_be('center');
+		value_of(table.border).should_be(2);
+		value_of(table.cellPadding).should_be(3);
+		value_of(table.cellSpacing).should_be(4);
 	}
 
 });
+
+describe('Element.get', {
+
+	"should get a single attribute of an Element": function(){
+		var div = new Element('div'); div.id = 'someId';
+		value_of(div.get('id')).should_be('someId');
+	},
+
+	"should get the class name of an Element": function(){
+		var div = new Element('div'); div.className = 'someClass';
+		value_of(div.get('class')).should_be('someClass');
+	},
+
+	"should get the checked attribute of an input Element": function(){
+		var checked1 = new Element('input', {type: 'checkbox'}); checked1.checked = true;
+		var checked2 = new Element('input', {type: 'checkbox'}); checked2.checked = 'checked';
+		var checked3 = new Element('input', {type: 'checkbox'}); checked3.checked = false;
+		var checked4 = new Element('input', {type: 'checkbox'});
+		value_of(checked1.get('checked')).should_be_true();
+		value_of(checked2.get('checked')).should_be_true();
+		value_of(checked3.get('checked')).should_be_false();
+		value_of(checked4.get('checked')).should_be_false();
+	},
+
+	"should get the disabled attribute of an input Element": function(){
+		var disabled1 = new Element('input', {type: 'text'}); disabled1.disabled = true;
+		var disabled2 = new Element('input', {type: 'text'}); disabled2.disabled = 'disabled';
+		var disabled3 = new Element('input', {type: 'text'}); disabled3.disabled = false;
+		var disabled4 = new Element('input', {type: 'text'});
+		value_of(disabled1.get('disabled')).should_be_true();
+		value_of(disabled2.get('disabled')).should_be_true();
+		value_of(disabled3.get('disabled')).should_be_false();
+		value_of(disabled4.get('disabled')).should_be_false();
+	},
+
+	"should get the readonly attribute of an input Element": function(){
+		var readonly1 = new Element('input', {type: 'text'}); readonly1.readOnly = true;
+		var readonly2 = new Element('input', {type: 'text'}); readonly2.readOnly = 'readonly';
+		var readonly3 = new Element('input', {type: 'text'}); readonly3.readOnly = false;
+		var readonly4 = new Element('input', {type: 'text'});
+		value_of(readonly1.get('readonly')).should_be_true();
+		value_of(readonly2.get('readonly')).should_be_true();
+		value_of(readonly3.get('readonly')).should_be_false();
+		value_of(readonly4.get('readonly')).should_be_false();
+	},
+
+	"should get the for attribute of a label Element": function(){
+		var label = new Element('label'); label.htmlFor = 'someInput';
+		value_of(label.get('for')).should_be('someInput');
+	},
+
+	"should get the href of an anchor Element": function(){
+		var anchor1 = new Element('a');
+		var anchor2 = new Element('a'); anchor2.href = '#someLink';
+		var anchor3 = new Element('a'); anchor3.href = '/developers';
+		var anchor4 = new Element('a'); anchor4.href = '../index.html';
+		var anchor5 = new Element('a'); anchor5.href = 'http://mootools.net/';
+		var anchor6 = new Element('a'); anchor6.href = window.location.href;
+		value_of(anchor1.get('href')).should_be_null();
+		value_of(anchor2.get('href')).should_be('#someLink');
+		value_of(anchor3.get('href')).should_be('/developers');
+		value_of(anchor4.get('href')).should_be('../index.html');
+		value_of(anchor5.get('href')).should_be('http://mootools.net/');
+		value_of(anchor6.get('href')).should_be(window.location.href);
+	},
+
+	"should get the html of an Element": function(){
+		var html = '<a href="http://mootools.net/">Link</a>';
+		var parent = new Element('div'); parent.innerHTML = html;
+		value_of(parent.get('html')).should_be(parent.innerHTML);
+	},
+
+	"should get the style attribute of an Element": function(){
+		var style = 'font-size:12px;line-height:23px';
+		var div = new Element('div').set('style', style);
+		value_of(div.get('style').toLowerCase().replace(/\s/g, '').replace(/;$/, '')).should_be(style);
+	},
+
+	"should get the tag of an Element": function(){
+		var a = new Element('a');
+		var em = new Element('em');
+		var div = new Element('div');
+		var span = new Element('span');
+		var input = new Element('input');
+		var select = new Element('select');
+		value_of(a.get('tag')).should_be('a');
+		value_of(em.get('tag')).should_be('em');
+		value_of(div.get('tag')).should_be('div');
+		value_of(span.get('tag')).should_be('span');
+		value_of(input.get('tag')).should_be('input');
+		value_of(select.get('tag')).should_be('select');
+	},
+
+	"should get the text of an Element": function(){
+		var div = new Element('div'); div.innerHTML = 'some text content';
+		value_of(div.get('text')).should_be('some text content');
+	},
+
+	"should get the type of an input Element": function(){
+		var input1 = new Element('input', {type: 'text'});
+		var input2 = new Element('input', {type: 'checkbox'});
+		value_of(input1.get('type')).should_be('text');
+		value_of(input2.get('type')).should_be('checkbox');
+	},
+
+	"should get various attributes of a script Element": function(){
+		var script = new Element('script', {type: 'text/javascript', defer: 'defer'});
+		value_of(script.get('type')).should_be('text/javascript');
+		value_of(script.get('defer')).should_be_true();
+	},
+
+	"should get various attributes of a table Element": function(){
+		var table = new Element('table', {align: 'center', border: '2', cellpadding: '3', cellspacing: '4'});
+		value_of(table.get('align')).should_be('center');
+		value_of(table.get('border')).should_be(2);
+		value_of(table.get('cellpadding')).should_be(3);
+		value_of(table.get('cellspacing')).should_be(4);
+	}
+
+});
+
+//-------------------------
 
 var myElements = new Elements([
 	new Element('div'),
@@ -1161,143 +1306,6 @@ describe('Element.toQueryString', {
 			'<textarea name="textarea"></textarea>'
 		});
 		value_of(form.toQueryString()).should_be('input=&textarea=');
-	}
-
-});
-
-describe('Element.getProperty', {
-
-	'should getProperty from an Element': function(){
-		var anchor1 = new Element('a');
-		anchor1.href = 'http://mootools.net';
-		value_of(anchor1.getProperty('href')).should_be('http://mootools.net');
-
-		var anchor2 = new Element('a');
-		anchor2.href = '#someLink';
-		value_of(anchor2.getProperty('href')).should_be('#someLink');
-	},
-
-	'should getProperty type of an input Element': function(){
-		var input1 = new Element('input', {type: 'text'});
-		value_of(input1.getProperty('type')).should_be('text');
-
-		var input2 = new Element('input', {type: 'checkbox'});
-		value_of(input2.getProperty('type')).should_be('checkbox');
-	},
-
-	'should getPropety checked from an input Element': function(){
-		var checked1 = new Element('input', { type: 'checkbox' });
-		checked1.checked = 'checked';
-		value_of(checked1.getProperty('checked')).should_be_true();
-
-		var checked2 = new Element('input', { type: 'checkbox' });
-		checked2.checked = true;
-		value_of(checked2.getProperty('checked')).should_be_true();
-
-		var checked3 = new Element('input', { type: 'checkbox' });
-		checked3.checked = false;
-		value_of(checked3.getProperty('checked')).should_be_false();
-	},
-
-	'should getProperty disabled from an input Element': function(){
-		var disabled1 = new Element('input', { type: 'text' });
-		disabled1.disabled = 'disabled';
-		value_of(disabled1.getProperty('disabled')).should_be_true();
-
-		var disabled2 = new Element('input', { type: 'text' });
-		disabled2.disabled = true;
-		value_of(disabled2.getProperty('disabled')).should_be_true();
-
-		var disabled3 = new Element('input', { type: 'text' });
-		disabled3.disabled = false;
-		value_of(disabled3.getProperty('disabled')).should_be_false();
-	},
-
-	'should getProperty readonly from an input Element': function(){
-		var readonly1 = new Element('input', { type: 'text' });
-		readonly1.readOnly = 'readonly';
-		value_of(readonly1.getProperty('readonly')).should_be_true();
-
-		var readonly2 = new Element('input', { type: 'text' });
-		readonly2.readOnly = true;
-		value_of(readonly2.getProperty('readonly')).should_be_true();
-
-		var readonly3 = new Element('input', { type: 'text' });
-		readonly3.readOnly = false;
-		value_of(readonly3.getProperty('readonly')).should_be_false();
-	}
-
-});
-
-describe('Element.setProperty', {
-
-	'should setProperty from an Element': function(){
-		var anchor1 = new Element('a').setProperty('href', 'http://mootools.net/');
-		value_of(anchor1.getProperty('href')).should_be('http://mootools.net/');
-
-		var anchor2 = new Element('a').setProperty('href', '#someLink');
-		value_of(anchor2.getProperty('href')).should_be('#someLink');
-	},
-
-	'should setProperty type of an input Element': function(){
-		var input1 = new Element('input').setProperty('type', 'text');
-		value_of(input1.getProperty('type')).should_be('text');
-
-		var input2 = new Element('input').setProperty('type', 'checkbox');
-		value_of(input2.getProperty('type')).should_be('checkbox');
-	},
-
-	'should setProperty checked from an input Element': function(){
-		var checked1 = new Element('input', { type: 'checkbox' }).setProperty('checked', 'checked');
-		value_of(checked1.getProperty('checked')).should_be_true();
-
-		var checked2 = new Element('input', { type: 'checkbox' }).setProperty('checked', true);
-		value_of(checked2.getProperty('checked')).should_be_true();
-
-		var checked3 = new Element('input', { type: 'checkbox' }).setProperty('checked', false);
-		value_of(checked3.getProperty('checked')).should_be_false();
-	},
-
-	'should setProperty disabled of an input Element': function(){
-		var disabled1 = new Element('input', { type: 'text' }).setProperty('disabled', 'disabled');
-		value_of(disabled1.getProperty('disabled')).should_be_true();
-
-		var disabled2 = new Element('input', { type: 'text' }).setProperty('disabled', true);
-		value_of(disabled2.getProperty('disabled')).should_be_true();
-
-		var disabled3 = new Element('input', { type: 'text' }).setProperty('disabled', false);
-		value_of(disabled3.getProperty('disabled')).should_be_false();
-	},
-
-	'should setProperty readonly of an input Element': function(){
-		var readonly1 = new Element('input', { type: 'text' }).setProperty('readonly', 'readonly');
-		value_of(readonly1.getProperty('readonly')).should_be_true();
-
-		var readonly2 = new Element('input', { type: 'text' }).setProperty('readonly', true);
-		value_of(readonly2.getProperty('readonly')).should_be_true();
-
-		var readonly3 = new Element('input', { type: 'text' }).setProperty('readonly', false);
-		value_of(readonly3.getProperty('readonly')).should_be_false();
-	}
-
-});
-
-describe('Element.getProperties', {
-
-	'should return an object associate with the properties passed': function(){
-		var readonly = new Element('input', { type: 'text', readonly: 'readonly' });
-		var props = readonly.getProperties('type', 'readonly');
-		value_of(props).should_be({ type: 'text', readonly: true });
-	}
-
-});
-
-describe('Element.setProperties', {
-
-	'should set each property to the Element': function(){
-		var readonly = new Element('input').setProperties({ type: 'text', readonly: 'readonly' });
-		var props = readonly.getProperties('type', 'readonly');
-		value_of(props).should_be({ type: 'text', readonly: true });
 	}
 
 });
