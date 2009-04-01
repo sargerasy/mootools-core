@@ -70,9 +70,8 @@ Function.prototype.implement = function(key, value){
 // typeOf, instanceOf, constructorOf
 
 var typeOf = function(item){
-	if (item == null) return 'nil';
+	if (item == null) return 'null';
 	if (item[':type']) return item[':type']();
-	
 	if (item.nodeName){
 		switch (item.nodeType){
 			case 1: return 'element';
@@ -82,7 +81,6 @@ var typeOf = function(item){
 		if (item.callee) return 'arguments';
 		else if (item.item) return 'collection';
 	}
-
 	return typeof item;
 };
 
